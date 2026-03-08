@@ -14,6 +14,7 @@ type UserRecord = {
   phone?: string;
   isActive?: boolean;
   isValid?: boolean;
+  admin?: boolean;
 };
 
 export default function UsersManager() {
@@ -49,7 +50,7 @@ export default function UsersManager() {
 
   async function onToggle(
     userId: string,
-    field: "isActive" | "isValid",
+    field: "isActive" | "isValid" | "admin",
     currentValue?: boolean
   ) {
     const key = `${userId}-${field}`;
@@ -96,6 +97,7 @@ export default function UsersManager() {
                 <th className="border-b px-3 py-2 font-semibold">Phone</th>
                 <th className="border-b px-3 py-2 font-semibold">isValid</th>
                 <th className="border-b px-3 py-2 font-semibold">isActive</th>
+                <th className="border-b px-3 py-2 font-semibold">admin</th>
                 <th className="border-b px-3 py-2 font-semibold">Status</th>
               </tr>
             </thead>
@@ -104,6 +106,8 @@ export default function UsersManager() {
                 const blocked = isUserBlocked(user);
                 const pendingValid = pending[`${user.id}-isValid`];
                 const pendingActive = pending[`${user.id}-isActive`];
+                const pendingAdmin = pending[`${user.id}-admin`];
+                const isAdmin = user.admin === true;
 
                 return (
                   <tr key={user.id} className="align-top">
@@ -144,6 +148,19 @@ export default function UsersManager() {
                         } disabled:opacity-50`}
                       >
                         {user.isActive ? "True" : "False"}
+                      </button>
+                    </td>
+                    <td className="border-b px-3 py-2">
+                      <button
+                        onClick={() => onToggle(user.id, "admin", user.admin)}
+                        disabled={pendingAdmin}
+                        className={`rounded px-3 py-1 font-medium ${
+                          isAdmin
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        } disabled:opacity-50`}
+                      >
+                        {isAdmin ? "True" : "False"}
                       </button>
                     </td>
                     <td className="border-b px-3 py-2">

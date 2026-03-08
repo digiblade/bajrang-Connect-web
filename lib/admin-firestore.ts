@@ -31,7 +31,7 @@ export async function toggleActive(
 
 export async function toggleUserFlag(
   userId: string,
-  field: "isActive" | "isValid",
+  field: "isActive" | "isValid" | "admin",
   value: boolean
 ) {
   await updateDoc(doc(db, "users", userId), { [field]: value });
